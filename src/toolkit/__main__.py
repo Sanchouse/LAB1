@@ -58,8 +58,10 @@ convert_parser.add_argument(
 
 
 def main():
+    
     try:
-        result = calculate("2+1")
+        args = parser.parse_args()
+        result = calculate(args.expression)
 
         sys.stdout.write(str(result) + "\n")
 
