@@ -3,7 +3,7 @@ from decimal import Decimal
 tokens, pos = [], 0
 
 def validation(cnum, cop, crbr, clbr):
-    
+
     #EMPTY
     if not tokens:
         raise ValueError("Expression is empty")
@@ -25,7 +25,7 @@ def validation(cnum, cop, crbr, clbr):
 
     #example: "10 10"
     if cnum>1 and cop==0:
-        raise ValueError("Expression doesn't have operators") 
+        raise ValueError("Expression doesn't have operators")
 
     #example: "3 + (2"
     if crbr != clbr:
@@ -36,7 +36,7 @@ def validation(cnum, cop, crbr, clbr):
             if tokens[i][0] == "LTBRACKETS" and tokens[i+1][0] == "RTBRACKETS" :
                 raise ValueError("Empty brackets")
 
-    
+
 
 
 
@@ -113,7 +113,6 @@ def parse_primary():
         number = tokens[pos][1]
         pos += 1
         return number
-    
 
 
 def parse_pow():
@@ -171,7 +170,7 @@ def parse_division():
         if tokens[pos][1] != "/":
             break
         pos += 1
-        
+
         right = parse_integer_division()
         try:
             left = left / right
