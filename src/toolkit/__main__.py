@@ -58,14 +58,21 @@ convert_parser.add_argument(
 
 
 def main():
-    
     try:
         args = parser.parse_args()
-        result = calculate(args.expression)
+        
+        if args.command == "calc":
+            result = calculate(args.expression)
 
-        sys.stdout.write(str(result) + "\n")
+            sys.stdout.write(str(result) + "\n")
 
-        return 0
+            return 0
+        elif args.command == "convert":
+            result = convert(args)
+
+            sys.stdout.write(str(result) + "\n")
+            
+            return 0
 
     except ValueError as e:
         sys.stderr.write(f"Ошибка: {e}\n")
