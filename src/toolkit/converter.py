@@ -16,16 +16,11 @@ def validation():
     if where_unit(to_unit) != where_unit(from_unit):
         raise ValueError("Different types")
 
-    #NOT NUMBER
-    if (not isinstance(value, float)):
-        raise ValueError("Not number")
-
     #UNKNOWN UNIT OR INVALID CHARACTER
     if where_unit(to_unit)=="ERROR" or where_unit(from_unit)=="ERROR":
         raise ValueError("Unknown unit or invalid character")
 
-    if where_unit(from_unit) == "TEMP":
-        if (value<=-273 and from_unit=="c") or (value<=0 and from_unit=="k") or (value<=-459.67 and from_unit=="f"):
+    if where_unit(from_unit) == "TEMP" and ((value<=-273 and from_unit=="c") or (value<=0 and from_unit=="k") or (value<=-459.67 and from_unit=="f")):
             raise ValueError("Too low")
 
 

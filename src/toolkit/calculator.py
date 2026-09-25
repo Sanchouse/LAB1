@@ -1,7 +1,7 @@
 from decimal import Decimal
 
-def validation(cnum, cop, crbr, clbr):
 
+def validation(cnum, cop, crbr, clbr):
     #EMPTY
     if not tokens:
         raise ValueError("Expression is empty")
@@ -39,15 +39,13 @@ def validation(cnum, cop, crbr, clbr):
 
 
 def tokenization(expr:str):
-    global tokens
-
     numbers, count_numbers, count_operators = "", 0, 0
     count_rtbrackets, count_ltbrackets = 0, 0
-    ifdoubleoperator = 0
+    if_double_operator = 0
 
     for i in range(len(expr)):
-        if ifdoubleoperator:
-            ifdoubleoperator = 0
+        if if_double_operator:
+            if_double_operator = 0
             continue
 
         if expr[i] in ["-", "+", "*", "/", "%"]:
@@ -58,7 +56,7 @@ def tokenization(expr:str):
             if i != len(expr)-1:
                 if expr[i]+expr[i+1] == "**" or expr[i]+expr[i+1] == "//":
                     tokens.append(("OPERATOR", expr[i]+expr[i+1]))
-                    ifdoubleoperator = 1
+                    if_double_operator = 1
                 else:
                     if not expr[i+1].isdigit():
                         tokens.append(("OPERATOR", expr[i]))
