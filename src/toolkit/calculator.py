@@ -1,7 +1,5 @@
 from decimal import Decimal
 
-tokens, pos = [], 0
-
 def validation(cnum, cop, crbr, clbr):
 
     #EMPTY
@@ -9,8 +7,8 @@ def validation(cnum, cop, crbr, clbr):
         raise ValueError("Expression is empty")
 
     #REPEATING
-    for i in range(len(tokens)):
-        if tokens[i][0] == tokens[i][1]:
+    for i in range(len(tokens)-1):
+        if tokens[i][0] == tokens[i+1][0]:
             raise ValueError("repeating elements")
 
     #OP AT THE END
@@ -62,10 +60,15 @@ def tokenization(expr:str):
                     tokens.append(("OPERATOR", expr[i]+expr[i+1]))
                     ifdoubleoperator = 1
                 else:
-                    tokens.append(("OPERATOR", expr[i]))
+                    if not expr[i+1].isdigit():
+                        tokens.append(("OPERATOR", expr[i]))
+                    elif expr[i] == "+" or expr[i] == "-":
+                        tokens.append(("OPERATOR", "+"))
+                        numbers += expr[i]
 
                 count_operators += 1
-
+            else:
+                tokens.append(("OPERATOR", expr[i]))
         elif expr[i].isdigit() or expr[i] == ".":
             numbers += expr[i]
 
@@ -234,5 +237,10 @@ def get_result():
 
 
 def calculate(args:str):
+    global tokens, pos
+    tokens = []
+    pos = 0
+    
+    
     tokenization(args)
-    return get_result().quantize(Decimal('1.00'))
+    return float(get_result().quantize(Decimal('1.00')))

@@ -1,5 +1,7 @@
+from decimal import Decimal
+
 distance = ["mm", "cm", "m", "km"]
-weight = ["g", "kg"]
+mass = ["g", "kg"]
 temperature = ["c", "f", "k"]
 
 def validation():
@@ -7,8 +9,8 @@ def validation():
     if from_unit in distance and value<0:
         raise ValueError("Distance can't be < 0")
     
-    if (from_unit in weight and value<0):
-        raise ValueError("Weight can't be < 0")
+    if (from_unit in mass and value<0):
+        raise ValueError("Mass can't be < 0")
 
     #DIFFERENT TYPES
     if where_unit(to_unit) != where_unit(from_unit):
@@ -31,8 +33,8 @@ def validation():
 def where_unit(unit):
     if unit in distance:
         return "DISTANCE"
-    elif unit in weight:
-        return "WEIGHT"
+    elif unit in mass:
+        return "MASS"
     elif unit in temperature:
         return "TEMP"
     else:
@@ -50,7 +52,7 @@ def converter():
             for i in range(distance.index(to_unit), distance.index(from_unit)):
                 convertation *= 10**(i+1)
 
-    if where_unit(from_unit) == "WEIGHT":
+    if where_unit(from_unit) == "MASS":
         if from_unit == "kg" and to_unit == "g":
             convertation *= 1000
         elif from_unit == "g" and to_unit == "kg":
@@ -71,11 +73,12 @@ def converter():
             convertation = convertation * 1.8 - 459.67
                 
         
-    return convertation
+    return Decimal(convertation).quantize(Decimal('1.000000'))
 
 
 def convert(args):
     global value, from_unit, to_unit
+    print(args)
     value, from_unit, to_unit = float(args.value), args.from_unit.lower(), args.to_unit.lower()
     validation()
     result = converter()
