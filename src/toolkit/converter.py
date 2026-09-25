@@ -78,7 +78,6 @@ def converter():
 
 def convert(args):
     global value, from_unit, to_unit
-    print(args)
     value, from_unit, to_unit = float(args.value), args.from_unit.lower(), args.to_unit.lower()
     validation()
     result = converter()
