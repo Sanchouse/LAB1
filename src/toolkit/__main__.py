@@ -1,5 +1,7 @@
 import argparse
+import json
 import sys
+from pathlib import Path
 
 from .calculator import calculate
 from .converter import convert
@@ -63,6 +65,23 @@ def main():
         if args.command == "calc":
             result = calculate(args.expression)
 
+            history = []
+            HISTORY_FILE = Path("results.json")
+
+            if HISTORY_FILE.exists():
+                with open("results.json", "r", encoding="utf-8") as file:
+                    lines = file.readlines()
+
+                with open("results.json", "r", encoding="utf-8") as json_file:
+                    if lines:
+                        history = json.load(json_file)
+                    
+            history.append({args.expression: result})
+
+            with open("results.json", "w", encoding="utf-8") as json_file:
+                json.dump(history, json_file, indent=1)
+
+
             sys.stdout.write(str(result) + "\n")
 
             return 0
@@ -76,7 +95,6 @@ def main():
     except ValueError as e:
         sys.stderr.write(f"Ошибка: {e}\n")
         return 2
-
 
 if __name__ == "__main__":
     sys.exit(main())
