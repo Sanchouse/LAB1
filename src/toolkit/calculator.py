@@ -58,7 +58,7 @@ def tokenization(expr:str):
                     tokens.append(("OPERATOR", expr[i]+expr[i+1]))
                     if_double_operator = 1
                 else:
-                    if not expr[i+1].isdigit():
+                    if not expr[i+1].isdigit() or expr[i] in ["*", "/", "%"]:
                         tokens.append(("OPERATOR", expr[i]))
                     elif expr[i] == "+" or expr[i] == "-":
                         tokens.append(("OPERATOR", "+"))
@@ -238,7 +238,6 @@ def calculate(args:str):
     global tokens, pos
     tokens = []
     pos = 0
-    
     
     tokenization(args)
     return float(get_result().quantize(Decimal('1.00')))
