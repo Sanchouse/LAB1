@@ -4,11 +4,11 @@ distance = ["mm", "cm", "m", "km"]
 mass = ["g", "kg"]
 temperature = ["c", "f", "k"]
 
-def validation():
-
+def validation() -> None:
+    """Check errors"""
     if from_unit in distance and value<0:
         raise ValueError("Distance can't be < 0")
-    
+
     if (from_unit in mass and value<0):
         raise ValueError("Mass can't be < 0")
 
@@ -25,7 +25,8 @@ def validation():
 
 
 
-def where_unit(unit):
+def where_unit(unit: str) -> str:
+    """Return type of unit (DISTANCE, MASS, TEMP)"""
     if unit in distance:
         return "DISTANCE"
     elif unit in mass:
@@ -36,7 +37,8 @@ def where_unit(unit):
         return "ERROR"
 
 
-def converter():
+def converter() -> float:
+    """Returns the converted unit"""
     convertation = value
     if where_unit(from_unit) == "DISTANCE":
         difference = distance.index(to_unit) - distance.index(from_unit)
@@ -66,14 +68,18 @@ def converter():
             convertation = (convertation + 459.67) * (5/9)
         elif from_unit == "k" and to_unit == "f":
             convertation = convertation * 1.8 - 459.67
-                
-        
-    return Decimal(convertation).quantize(Decimal('1.000000'))
 
 
-def convert(args):
+    return float(Decimal(convertation).quantize(Decimal('1.000000')))
+
+
+def convert(args) -> float:
+    """A function for converting into different units"""
     global value, from_unit, to_unit
+
     value, from_unit, to_unit = float(args.value), args.from_unit.lower(), args.to_unit.lower()
+
     validation()
     result = converter()
-    return float(result)
+
+    return result
