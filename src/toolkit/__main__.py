@@ -17,7 +17,7 @@ commands = parser.add_subparsers(
 )
 
 
-# ---------- CALC ----------
+# CALC
 
 calc_parser = commands.add_parser(
     "calc",
@@ -30,7 +30,7 @@ calc_parser.add_argument(
 )
 
 
-# ---------- CONVERT ----------
+# CONVERT
 
 convert_parser = commands.add_parser(
     "convert",

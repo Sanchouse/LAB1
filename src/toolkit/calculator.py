@@ -1,7 +1,9 @@
 from decimal import Decimal
 
 
-def validation(cnum, cop, crbr, clbr):
+def validation(cnum: int, cop: int, crbr: int, clbr: int) -> None:
+    """Check errors"""
+
     #EMPTY
     if not tokens:
         raise ValueError("Expression is empty")
@@ -38,7 +40,9 @@ def validation(cnum, cop, crbr, clbr):
 
 
 
-def tokenization(expr:str):
+def tokenization(expr:str) -> None:
+    """Create tokens from expression"""
+
     numbers, count_numbers, count_operators = "", 0, 0
     count_rtbrackets, count_ltbrackets = 0, 0
     if_double_operator = 0
@@ -100,7 +104,8 @@ def tokenization(expr:str):
     validation(count_numbers, count_operators, count_ltbrackets, count_rtbrackets)
 
 
-def parse_primary():
+def parse_primary() -> float:
+    """Return digit or answer of an expression in brackets"""
     global pos
     if tokens[pos][0] == "LTBRACKETS":
         pos += 1
@@ -116,7 +121,8 @@ def parse_primary():
         return number
 
 
-def parse_pow():
+def parse_pow() -> float:
+    """Check pow in current position"""
     global pos
     left = parse_primary()
     while True:
@@ -131,7 +137,8 @@ def parse_pow():
 
     return left
 
-def parse_percent():
+def parse_percent() -> float:
+    """Check percent in current position"""
     global pos
     left = parse_pow()
     while True:
@@ -144,7 +151,9 @@ def parse_percent():
 
     return left
 
-def parse_integer_division():
+def parse_integer_division() -> float:
+    """Check integer division in current position"""
+
     global pos
     left = parse_percent()
     while True:
@@ -162,7 +171,9 @@ def parse_integer_division():
 
     return left
 
-def parse_division():
+def parse_division() -> float:
+    """Check division in current position"""
+
     global pos
     left = parse_integer_division()
     while True:
@@ -180,7 +191,9 @@ def parse_division():
 
     return left
 
-def parse_multiplication():
+def parse_multiplication() -> float:
+    """Check multiplication in current position"""
+
     global pos
     left = parse_division()
     while True:
@@ -195,7 +208,9 @@ def parse_multiplication():
 
     return left
 
-def parse_minus():
+def parse_minus() -> float:
+    """Check minus in current position"""
+
     global pos
     left = parse_multiplication()
     while True:
@@ -212,7 +227,9 @@ def parse_minus():
 
     return left
 
-def parse_plus():
+def parse_plus() -> float:
+    """Check plus in current position"""
+
     global pos
     left = parse_minus()
     while True:
@@ -230,11 +247,13 @@ def parse_plus():
 
     return left
 
-def get_result():
+def get_result() -> float:
+    """Return result of an expression"""
     return parse_plus()
 
 
-def calculate(args:str):
+def calculate(args:str) -> float:
+    """Return result of an expression"""
     global tokens, pos
     tokens = []
     pos = 0
