@@ -1,5 +1,7 @@
 from decimal import Decimal
 
+import toolkit.errors as error
+
 distance = ["mm", "cm", "m", "km"]
 mass = ["g", "kg"]
 temperature = ["c", "f", "k"]
@@ -7,21 +9,23 @@ temperature = ["c", "f", "k"]
 def validation() -> None:
     """Check errors"""
     if from_unit in distance and value<0:
-        raise ValueError("Distance can't be < 0")
+        raise error.NegativeValueError()
 
-    if (from_unit in mass and value<0):
-        raise ValueError("Mass can't be < 0")
+    if from_unit in mass and value<0:
+        raise error.NegativeValueError()
 
     #DIFFERENT TYPES
     if where_unit(to_unit) != where_unit(from_unit):
-        raise ValueError("Different types")
+        raise error.DifferentTypesError(from_unit, to_unit)
 
     #UNKNOWN UNIT OR INVALID CHARACTER
-    if where_unit(to_unit)=="ERROR" or where_unit(from_unit)=="ERROR":
-        raise ValueError("Unknown unit or invalid character")
+    if where_unit(to_unit)=="ERROR":
+        error.UnknownUnitError(to_unit)
+    elif where_unit(from_unit)=="ERROR":
+        error.UnknownUnitError(from_unit)
 
-    if where_unit(from_unit) == "TEMP" and ((value<=-273 and from_unit=="c") or (value<=0 and from_unit=="k") or (value<=-459.67 and from_unit=="f")):
-            raise ValueError("Too low")
+    if where_unit(from_unit) == "TEMP" and ((value<-273.15 and from_unit=="c") or (value<0 and from_unit=="k") or (value<-459.67 and from_unit=="f")):
+            raise error.BelowAbsoluteZeroError()
 
 
 

@@ -1,43 +1,37 @@
 from decimal import Decimal
 
+import toolkit.errors as error
+
 
 def validation(cnum: int, cop: int, crbr: int, clbr: int) -> None:
     """Check errors"""
 
     #EMPTY
     if not tokens:
-        raise ValueError("Expression is empty")
+        raise error.EmptyBracketsError()
 
     #REPEATING
     for i in range(len(tokens)-1):
-        if tokens[i][0] == tokens[i+1][0]:
-            raise ValueError("repeating elements")
+        if tokens[i][0] == tokens[i+1][0] and tokens[i][0] != "LTBRACKETS" and tokens[i][0] != "RTBRACKETS":
+            raise error.RepeatingElementsError()
 
     #OP AT THE END
     if tokens[-1][0] == "OPERATOR":
-        raise ValueError("Operator can't be at the end")
+        raise error.OperatorAtTheEndError()
 
-    #Incorrect symbol
+    #UNKNOWN CHAR
     for i in range(len(tokens)):
         if tokens[i][0] == "ERROR":
-            raise ValueError("Incorrect symbol in expression")
-
-
-    #example: "10 10"
-    if cnum>1 and cop==0:
-        raise ValueError("Expression doesn't have operators")
+            raise error.UnknownCharError(tokens[i][1])
 
     #example: "3 + (2"
     if crbr != clbr:
-        raise ValueError("There aren’t enough brackets.")
+        raise error.NotEnoughBracketsError()
 
     #Empty brackets
     for i in range(len(tokens)-1):
             if tokens[i][0] == "LTBRACKETS" and tokens[i+1][0] == "RTBRACKETS" :
-                raise ValueError("Empty brackets")
-
-
-
+                raise error.EmptyBracketsError()
 
 
 def tokenization(expr:str) -> None:
@@ -257,6 +251,6 @@ def calculate(args:str) -> float:
     global tokens, pos
     tokens = []
     pos = 0
-    
+
     tokenization(args)
     return float(get_result().quantize(Decimal('1.00')))

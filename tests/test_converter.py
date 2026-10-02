@@ -1,5 +1,4 @@
 import pytest
-
 from toolkit.converter import convert
 
 
@@ -11,7 +10,7 @@ class DataForTests:
 class TestConverter:
     def test_m_to_cm(self):
         assert convert(DataForTests(5, "m", "cm")) == 500
-    
+
     def test_km_to_cm(self):
         assert convert(DataForTests(1.5, "km", "cm")) == 150000
 

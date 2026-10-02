@@ -18,7 +18,6 @@ commands = parser.add_subparsers(
 
 
 # CALC
-
 calc_parser = commands.add_parser(
     "calc",
     help="Вычислить выражение"
@@ -31,7 +30,6 @@ calc_parser.add_argument(
 
 
 # CONVERT
-
 convert_parser = commands.add_parser(
     "convert",
     help="Конвертировать величину"
@@ -61,7 +59,7 @@ convert_parser.add_argument(
 def main():
     try:
         args = parser.parse_args()
-        
+
         if args.command == "calc":
             result = calculate(args.expression)
 
@@ -75,7 +73,7 @@ def main():
                 with open("results.json", "r", encoding="utf-8") as json_file:
                     if lines:
                         history = json.load(json_file)
-                    
+
             history.append({args.expression: result})
 
             with open("results.json", "w", encoding="utf-8") as json_file:
@@ -89,7 +87,7 @@ def main():
             result = convert(args)
 
             sys.stdout.write(str(result) + "\n")
-            
+
             return 0
 
     except ValueError as e:
@@ -98,5 +96,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-
-
